@@ -1,7 +1,7 @@
 <?php
 
 require 'bbdd.php'; // Incluimos fichero en la que está la coenxión con la BBDD
-require 'jsonEsperadoCoche.php';
+require 'jsonEsperadodepositos.php';
 
 /*
  * Se mostrará siempre la información en formato json para que se pueda leer desde un html (via js)
@@ -24,30 +24,30 @@ if(isset($parameters)){
 	// Funcion declarada en jsonEsperado.php
 	if(JSONCorrectoAnnadir($mensajeRecibido)){
 
-		$coche = $mensajeRecibido["cocheAnnadir"];
+		$deposito = $mensajeRecibido["depositoAnnadir"];
 
-		$nombre = $coche["nombre"];
-		$descripcion = $coche["descripcion"];
-		$caracteristica1 = $coche["caracteristica1"];
-    $caracteristica2 = $coche["caracteristica2"];
-		$idFabricante = $coche["idFabricante"];
+		$nombre = $deposito["nombre"];
+		$valor = $deposito["valor"];
+		$cantidad = $deposito["cantidad"];
 
-		$query  = "INSERT INTO  coches (Nombre,Descripcion,Caracteristica1,Caracteristica2,ID_Fabricante) ";
-		$query .= "VALUES ('$nombre','$descripcion','$caracteristica1','$caracteristica2','$idFabricante')";
+		$query  = "UPDATE `depositos` ";
+		$query .= "SET `nombre`='$nombre',`valor`=$valor, `cantidad`=$cantidad WHERE valor = $valor";
 
 		$result = $conn->query ( $query );
 
 		if (isset ( $result ) && $result) { // Si pasa por este if, la query está está bien y se ha insertado correctamente
 
 			$arrMensaje["estado"] = "ok";
-			$arrMensaje["mensaje"] = "Coche insertado correctamente";
+			$arrMensaje["mensaje"] = "Depositos insertado correctamente";
+			$arrMensaje["query"] = "Query usada: $query";
 
 		}else{ // Se ha producido algún error al ejecutar la query
 
 			$arrMensaje["estado"] = "error";
 			$arrMensaje["mensaje"] = "SE HA PRODUCIDO UN ERROR AL ACCEDER A LA BASE DE DATOS";
 			$arrMensaje["error"] = $conn->error;
-			$arrMensaje["query"] = $query;
+			$arrMensaje["query"] = "Query usada: $query";
+
 
 		}
 

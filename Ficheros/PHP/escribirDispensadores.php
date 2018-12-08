@@ -1,7 +1,7 @@
 <?php
 
 require 'bbdd.php'; // Incluimos fichero en la que está la coenxión con la BBDD
-require 'jsonEsperadoMarca.php';
+require 'jsonEsperadodispensador.php';
 
 /*
  * Se mostrará siempre la información en formato json para que se pueda leer desde un html (via js)
@@ -22,23 +22,26 @@ if(isset($parameters)){
 	$mensajeRecibido = json_decode($parameters, true);
 	// Comprobamos que están todos los datos en el json que hemos recibido
 	// Funcion declarada en jsonEsperado.php
-	if(JSONCorrectoAnnadir1($mensajeRecibido)){
+	if(JSONCorrectoAnnadir($mensajeRecibido)){
 
-		$equipo = $mensajeRecibido["marcaAnnadir"];
+		$dispensador = $mensajeRecibido["dispensadorAnnadir"];
 
-		$nombre = $equipo["nombre"];
-    $sede = $equipo["sede"];
+		$clave = $dispensador["clave"];
+		$nombre = $dispensador["nombre"];
+		$precio = $dispensador["precio"];
+		$cantidad = $dispensador["cantidad"];
 
-
-		$query  = "INSERT INTO  marca (Nombre, Sede) ";
-		$query .= "VALUES ('$nombre','$sede')";
+		
+		$query  = "UPDATE `dispensadores` ";
+		$query .= "SET `clave`='$clave',`nombre`='$nombre',`precio`=$precio,`cantidad`=$cantidad WHERE clave = '$clave'";
 
 		$result = $conn->query ( $query );
 
 		if (isset ( $result ) && $result) { // Si pasa por este if, la query está está bien y se ha insertado correctamente
 
 			$arrMensaje["estado"] = "ok";
-			$arrMensaje["mensaje"] = "Marca insertado correctamente";
+			$arrMensaje["mensaje"] = "Dispensadores insertado correctamente";
+			$arrMensaje["query"] = "Query usada: $query";
 
 		}else{ // Se ha producido algún error al ejecutar la query
 

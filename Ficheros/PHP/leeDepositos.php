@@ -27,9 +27,10 @@ if (isset ( $result ) && $result) { // Si pasa por este if, la query está está
 			// Por cada vuelta del bucle creamos un jugador. Como es un objeto hacemos un array asociativo
 			$arrDeposito = array();
 			// Por cada columna de la tabla creamos una propiedad para el objeto
-			$arrDeposito["nombre"] = $row["Nombre"];
-      $arrDeposito["sede"] = $row["Sede"];
-			$arrDeposito["idFabricante"] = $row["ID_Fabricante"];
+			$arrDeposito["nombre"] = $row["nombre"];
+			$arrDeposito["id"] = $row["id"];
+			$arrDeposito["valor"] = $row["valor"];
+			$arrDeposito["cantidad"] = $row["cantidad"];
 
 			// Por último, añadimos el nuevo jugador al array de jugadores
 			$arrDepositos[] = $arrDeposito;
@@ -38,13 +39,13 @@ if (isset ( $result ) && $result) { // Si pasa por este if, la query está está
 
 		// Añadimos al $arrMensaje el array de jugadores y añadimos un campo para indicar que todo ha ido OK
 		$arrMensaje["estado"] = "ok";
-		$arrMensaje["equipos"] = $arrDepositos;
+		$arrMensaje["depositos"] = $arrDepositos;
 
 
 	} else {
 
 		$arrMensaje["estado"] = "ok";
-		$arrMensaje["equipos"] = []; // Array vacío si no hay resultados
+		$arrMensaje["depositos"] = []; // Array vacío si no hay resultados
 	}
 
 } else {
